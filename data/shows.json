@@ -1,0 +1,103 @@
+{
+  "Lovebot_Island": {
+    "name": "Lovebot Island",
+    "theme": "Dating",
+    "style": [
+      "Love Is Blind",
+      "Newlyweds Game"
+    ],
+    "drama": 8,
+    "cast": [
+      "Alex",
+      "Jamie",
+      "Taylor"
+    ],
+    "behaviors": [
+      "Emotional",
+      "Comedic"
+    ],
+    "seasons": {
+      "1": {
+        "1": {
+          "scenes": [
+            {
+              "prompt": "The contestants meet on the virtual beach for the first time.",
+              "video_path": "media/show_videos/Lovebot_Island_S1E1_scene1.mp4"
+            }
+          ],
+          "transcript": [
+            "The contestants meet on the virtual beach for the first time."
+          ]
+        }
+      }
+    }
+  },
+  "Cyber_Survivors": {
+    "name": "Cyber Survivors",
+    "theme": "Survival",
+    "style": [
+      "Survivor"
+    ],
+    "drama": 6,
+    "cast": [
+      "Morgan",
+      "Casey",
+      "Riley"
+    ],
+    "behaviors": [
+      "Aggressive",
+      "Scheming"
+    ],
+    "seasons": {
+      "1": {
+        "1": {
+          "scenes": [
+            {
+              "prompt": "Morgan and Casey form an alliance to steal resources from Riley.",
+              "video_path": "media/show_videos/Cyber_Survivors_S1E1_scene1.mp4"
+            }
+          ],
+          "transcript": [
+            "Morgan and Casey form an alliance to steal resources from Riley."
+          ]
+        }
+      }
+    }
+  },
+  "Scientologiest_Are_Virgins_FITE_ME": {
+    "name": "Scientologiest Are Virgins FITE ME",
+    "theme": [
+      "\ud83d\udd75\ufe0f\u200d\u2642\ufe0f Scandal & Betrayal",
+      "\ud83c\udfda\ufe0f Dysfunction Junction",
+      "\ud83d\udcf8 Shameless Fame Chasers"
+    ],
+    "style": [
+      "Cheaters\u2019 Chateau"
+    ],
+    "drama": 10,
+    "cast": [
+      "Alex",
+      "Jamie",
+      "Taylor"
+    ],
+    "behaviors": [
+      "Aggressive",
+      "Emotional"
+    ],
+    "seasons": {
+      "1": {
+        "1": {
+          "scenes": [
+            {
+              "prompt": "Alex gets drunk and tries kissing Jamies grandma and didnt know taylor was filming",
+              "video_path": "data/media/show_videos/Scientologiest_Are_Virgins_FITE_ME_S1E1_scene9307.mp4"
+            }
+          ],
+          "transcript": [
+            "Alex gets drunk and tries kissing Jamies grandma and didnt know taylor was filming"
+          ]
+        }
+      }
+    }
+  }
+}

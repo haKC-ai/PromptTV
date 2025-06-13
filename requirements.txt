@@ -1,0 +1,15 @@
+# Core app (PromptTV)
+streamlit
+requests
+python-dotenv
+Pillow
+
+# Twitter watcher & REST API
+fastapi
+uvicorn
+tweepy
+
+# YouTube automation
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
