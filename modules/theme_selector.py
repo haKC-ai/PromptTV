@@ -1,4 +1,8 @@
 import streamlit as st
+import os
+import json
+import random
+
 
 THEMES = {
     "Scandal & Betrayal": [
@@ -159,83 +163,258 @@ THEMES = {
 
 # Map each category to an emoji
 GENRE_EMOJIS = {
-    "Scandal & Betrayal": "🕵️‍♂️",
-    "Freaky Competitions": "🤪",
-    "Dysfunction Junction": "🏚️",
-    "Shameless Fame Chasers": "📸",
-    "Grimy Makeovers": "💄",
-    "Dramas": "🎭",
-    "Comedies": "😂"
+    "Scandal & Betrayal": "",
+    "Freaky Competitions": "",
+    "Dysfunction Junction": "",
+    "Shameless Fame Chasers": "",
+    "Grimy Makeovers": "",
+    "Dramas": "",
+    "Comedies": ""
 }
 
-def theme_grid(session_state):
-    genres = st.multiselect(
-        "Genres", 
-        [f"{GENRE_EMOJIS[g]} {g}" for g in THEMES.keys()],
-        key="genre_multiselect"
+
+
+CHARACTER_BEHAVIOR_TRAITS = [
+    "Emotional", "Aggressive", "Comedic", "Scheming", "Shy", "Bold",
+    "Unhinged", "Secretive", "Petty", "Obsessive", "Impulsive", "Naive"
+]
+
+RANDOM_NAMES = [
+    "Bingo Spangles", "Kiki Sassafras", "Duke Danger", "Bubbles Malone",
+    "Ricky Stankfoot", "Trisha Pickle", "Jazz Bazooka", "Fanny Magoo",
+    "Terry Tinfoil", "Muffin Topps", "Lola Slinky", "Butters McGee"
+]
+CHARACTER_BEHAVIOR_TRAITS = [
+    "Charismatic", "Scheming", "Loyal", "Impulsive", "Brooding", "Flamboyant", "Cold-blooded", "Eccentric",
+    "Street-smart", "Bookish", "Benevolent", "Ruthless", "Mysterious", "Chill", "Ambitious", "Cunning",
+    "Comedic", "Sensitive", "No-nonsense", "Wildcard", "Self-absorbed", "Stoic", "Reckless", "Zen",
+    "Rich", "Poor", "Blue-collar", "Glamorous", "Grimy", "Influencer", "Has-been", "Bossy", "Introvert",
+    "Extrovert", "Messy", "Put-together", "Petty", "Savage", "Unapologetic", "Try-hard", "Low-key",
+    "Hustler", "Trust-fund", "Slacker", "Hacker", "Custom..."
+]
+
+RANDOM_NAMES = [
+    "Bingo Spangles", "Kiki Sassafras", "Duke Danger", "Bubbles Malone",
+    "Ricky Stankfoot", "Trisha Pickle", "Jazz Bazooka", "Fanny Magoo",
+    "Terry Tinfoil", "Muffin Topps", "Lola Slinky", "Butters McGee"
+]
+
+PHYS_DESCS = [
+    "Tall and sharp-eyed", "Short and quick-witted", "Average build, striking aura",
+    "Built like a tank", "Slender and wiry", "Radiates mischief", "Glasses, neon hair",
+    "Gold teeth flashing", "Face tattoos and wild piercings", "Always fidgeting",
+    "Impossibly perfect hair", "Wearing sunglasses indoors"
+]
+
+FASHIONS = [
+    "thrifted retro jackets and scuffed boots", "tailored Italian suits and diamond cufflinks",
+    "hoodie-clad, laptop in tow", "designer athleisure and gold sneakers",
+    "vintage band tee, wild hair, piercings everywhere", "minimalist black and silver",
+    "cargo pants with more pockets than secrets", "90s rap video chic",
+    "covered in fake fur and rhinestones", "fast fashion with maximum bling"
+]
+
+WEALTH = [
+    "broke", "living large", "modest means", "secretly wealthy", "unapologetically rich",
+    "just scraping by", "old money", "new money", "maxed-out credit", "rags-to-riches"
+ ]
+
+def generate_character_blurb(name, traits, custom_traits, phys, fashion, wealth, drama):
+    trait_list = traits.copy()
+    if "Custom..." in traits and custom_traits:
+        trait_list += [ct.strip() for ct in custom_traits.split(",") if ct.strip()]
+    trait_list = [t for t in trait_list if t != "Custom..."]
+    g_traits = ", ".join(trait_list) if trait_list else "unpredictable"
+    return (
+        f"**{name}**: {phys}, usually seen in {fashion}. "
+        f"{name.split()[0]} is {wealth}, drama level {drama}, and has a vibe that's {g_traits.lower()}."
     )
-    chosen_styles = []
+def theme_grid(session_state, enable_new_show, key_prefix=""):
+    if not enable_new_show:
+        return
 
-    # Extract actual genre name (not just with emoji)
-    def strip_emoji(genre_label):
-        return genre_label.split(" ", 1)[1] if " " in genre_label else genre_label
-
+    st.markdown("### 1. Pick Genres & Styles")
+    genres = st.multiselect(
+        "Pick Genres",
+        [f"{GENRE_EMOJIS[g]} {g}" for g in THEMES.keys()],
+        key=f"{key_prefix}genre_multiselect"
+    )
+    def strip_emoji(label): return label.split(" ", 1)[1] if " " in label else label
     genres_clean = [strip_emoji(g) for g in genres]
-
+    chosen_styles = []
     for genre in genres_clean:
-        emoji = GENRE_EMOJIS.get(genre, "")
-        st.markdown(f"#### {emoji} {genre}")
-        shows = THEMES[genre]
-        cols = st.columns(len(shows))
-        for idx, show in enumerate(shows):
-            # Mark "spicy" shows (use your own logic for what counts as spicy, or flag in dict)
-            spicy_keywords = ["spicy", "drama", "raunchy", "affair", "betrayal", "freaky", "nude", "sex", "kink", "strip", "cringe", "makeout", "tantric", "orgy", "lusty", "bikini"]
-            spicy = any(word in show["desc"].lower() for word in spicy_keywords)
-            pepper = "🌶️" if spicy else ""
-            bg_style = "background-color:#ffe5e5;" if spicy else ""
-            with cols[idx]:
-                st.markdown(
-                    f"<div style='border-radius:10px; padding:12px; {bg_style}'>"
-                    f"<b>{show['name']} {pepper}</b><br><span style='font-size:90%;'>{show['desc']}</span>"
-                    f"</div>",
-                    unsafe_allow_html=True
-                )
-                c = st.checkbox(
-                    f"Select {show['name']}",
-                    key=f"showstyle_{genre}_{show['name']}"
-                )
-                if c:
-                    chosen_styles.append(show['name'])
+            emoji = GENRE_EMOJIS.get(genre, "")
+            st.markdown(f"#### {emoji} {genre}")
+            shows = THEMES[genre]
+            cols = st.columns(len(shows))
+            for idx, show in enumerate(shows):
+                spicy_keywords = [
+                    "spicy", "drama", "raunchy", "affair", "betrayal",
+                    "freaky", "nude", "sex", "kink", "strip", "cringe",
+                    "makeout", "tantric", "orgy", "lusty", "bikini"
+                ]
+                spicy = any(word in show["desc"].lower() for word in spicy_keywords)
+                pepper = "🌶️" if spicy else ""
+                bg_style = "background-color:#ffe5e5;" if spicy else ""
+                with cols[idx]:
+                    st.markdown(
+                        f"<div style='border-radius:10px; padding:12px; {bg_style}'>"
+                        f"<b>{show['name']} {pepper}</b><br><span style='font-size:90%;'>{show['desc']}</span>"
+                        f"</div>",
+                        unsafe_allow_html=True
+                    )
+                    c = st.checkbox(
+                        f"Select {show['name']}",
+                        key=f"showstyle_{genre}_{show['name']}"
+                    )
+                    if c:
+                        chosen_styles.append(show['name'])
     if chosen_styles:
-        if st.button("Continue with selection", key="theme_continue"):
+        if st.button("Continue to Character Builder", key=f"{key_prefix}to_chars"):
+            session_state["genre_done"] = True
             session_state["theme"] = genres
             session_state["style"] = chosen_styles
-            session_state["step"] = "show_details"
 
-    # Only show the show details form when ready
-    if session_state.get("step") == "show_details":
-        show_details_form(session_state)
-
-def show_details_form(session_state):
-    with st.form(key="show_details_form"):
-        show_name = st.text_input("Show Name")
-        drama_level = st.slider("Drama Level", 1, 10, 5)
-        cast_names = st.text_area("Cast Names (comma separated)", "Alex, Jamie, Taylor")
-        behaviors = st.multiselect(
-            "Behavioral Traits",
-            ["Emotional", "Aggressive", "Comedic", "Scheming", "Shy", "Bold"]
+    if session_state.get("genre_done"):
+        st.markdown("---")
+        st.markdown("### 2. Character Builder")
+        if f"{key_prefix}cast_names_input" not in session_state:
+            session_state[f"{key_prefix}cast_names_input"] = "Alex, Jamie, Taylor"
+        cast_names_input = st.text_area(
+            "Cast Names (comma separated)",
+            session_state[f"{key_prefix}cast_names_input"],
+            key=f"{key_prefix}cast_names_area"
         )
-        submitted = st.form_submit_button("Create Show")
-        if submitted and show_name.strip():
-            show_id = show_name.strip().replace(" ", "_")
-            session_state["shows"][show_id] = {
-                "name": show_name,
-                "theme": session_state["theme"],
-                "style": session_state["style"],
-                "drama": drama_level,
-                "cast": [n.strip() for n in cast_names.split(",")],
-                "behaviors": behaviors,
-                "seasons": {}
-            }
-            session_state["new_show"] = show_name
-            session_state["step"] = None
+        cast = [c.strip() for c in cast_names_input.split(",") if c.strip()]
+        session_state[f"{key_prefix}cast_names_input"] = cast_names_input
+
+        has_host = st.checkbox("Include a Host Character", key=f"{key_prefix}has_host")
+        host_name = ""
+        if has_host:
+            host_name = st.text_input("Host Name", value="Maury", key=f"{key_prefix}host_name")
+
+        char_list = cast.copy()
+        if has_host and host_name:
+            char_list.append(host_name)
+
+        # Per-character builder state
+        def state_get(attr, default):
+            return session_state.get(f"{key_prefix}{attr}", default)
+        def state_set(attr, value):
+            session_state[f"{key_prefix}{attr}"] = value
+
+        for attr, default in [
+            ("char_behaviors", {}),
+            ("char_custom_traits", {}),
+            ("char_phys", {}),
+            ("char_fashion", {}),
+            ("char_wealth", {}),
+            ("char_drama", {}),
+        ]:
+            if f"{key_prefix}{attr}" not in session_state:
+                state_set(attr, default)
+
+        char_cols = st.columns(min(3, max(1, len(char_list))))
+        for idx, char in enumerate(char_list):
+            col = char_cols[idx % len(char_cols)]
+            with col:
+                st.markdown(f"**{char}**")
+                char_drama = st.slider(
+                    f"{char} Drama", 1, 10,
+                    state_get("char_drama", {}).get(char, 5),
+                    key=f"{key_prefix}drama_{char}"
+                )
+                session_state[f"{key_prefix}char_drama"][char] = char_drama
+
+                traits = st.multiselect(
+                    f"{char} Traits", CHARACTER_BEHAVIOR_TRAITS,
+                    default=state_get("char_behaviors", {}).get(char, []),
+                    key=f"{key_prefix}traits_{char}"
+                )
+                session_state[f"{key_prefix}char_behaviors"][char] = traits
+
+                custom_traits = ""
+                if "Custom..." in traits:
+                    custom_traits = st.text_input(
+                        f"{char} Custom traits",
+                        state_get("char_custom_traits", {}).get(char, ""),
+                        key=f"{key_prefix}custom_{char}"
+                    )
+                    session_state[f"{key_prefix}char_custom_traits"][char] = custom_traits
+
+                phys = st.selectbox(
+                    f"{char} Physical", PHYS_DESCS,
+                    index=PHYS_DESCS.index(state_get("char_phys", {}).get(char, PHYS_DESCS[0]))
+                    if state_get("char_phys", {}).get(char) in PHYS_DESCS else 0,
+                    key=f"{key_prefix}phys_{char}"
+                )
+                session_state[f"{key_prefix}char_phys"][char] = phys
+
+                fashion = st.selectbox(
+                    f"{char} Fashion", FASHIONS,
+                    index=FASHIONS.index(state_get("char_fashion", {}).get(char, FASHIONS[0]))
+                    if state_get("char_fashion", {}).get(char) in FASHIONS else 0,
+                    key=f"{key_prefix}fashion_{char}"
+                )
+                session_state[f"{key_prefix}char_fashion"][char] = fashion
+
+                wealth = st.selectbox(
+                    f"{char} Wealth", WEALTH,
+                    index=WEALTH.index(state_get("char_wealth", {}).get(char, WEALTH[0]))
+                    if state_get("char_wealth", {}).get(char) in WEALTH else 0,
+                    key=f"{key_prefix}wealth_{char}"
+                )
+                session_state[f"{key_prefix}char_wealth"][char] = wealth
+
+                st.caption(generate_character_blurb(
+                    char, traits,
+                    session_state[f"{key_prefix}char_custom_traits"].get(char, ""),
+                    phys, fashion, wealth, char_drama
+                ))
+
+        # Add a random character
+        if st.button("Add Random Character", key=f"{key_prefix}rand_char_btn"):
+            new_name = random.choice([n for n in RANDOM_NAMES if n not in cast])
+            session_state[f"{key_prefix}cast_names_input"] += ", " + new_name
+            st.experimental_rerun()
+
+        if st.button("Continue to Show Details", key=f"{key_prefix}to_show_details"):
+            session_state["chars_done"] = True
+
+    if session_state.get("chars_done"):
+        st.markdown("---")
+        st.markdown("### 3. Show Details & Save")
+        show_name = st.text_input("Show Name", value=session_state.get("show_name", ""), key=f"{key_prefix}show_name_main")
+        overall_drama = st.slider("Overall Drama Level", 1, 10, 5, key=f"{key_prefix}overall_drama")
+        session_state["show_name"] = show_name
+
+        cast = [c.strip() for c in session_state.get(f"{key_prefix}cast_names_input", "").split(",") if c.strip()]
+        if session_state.get(f"{key_prefix}has_host") and session_state.get(f"{key_prefix}host_name"):
+            cast.append(session_state[f"{key_prefix}host_name"])
+        show_id = show_name.strip().replace(" ", "_")
+        show_obj = {
+            "name": show_name,
+            "theme": session_state.get("theme", []),
+            "style": session_state.get("style", []),
+            "drama": overall_drama,
+            "cast": cast,
+            "behaviors": {c: session_state[f"{key_prefix}char_behaviors"].get(c, []) for c in cast},
+            "custom_traits": {c: session_state[f"{key_prefix}char_custom_traits"].get(c, "") for c in cast},
+            "phys": {c: session_state[f"{key_prefix}char_phys"].get(c, "") for c in cast},
+            "fashion": {c: session_state[f"{key_prefix}char_fashion"].get(c, "") for c in cast},
+            "wealth": {c: session_state[f"{key_prefix}char_wealth"].get(c, "") for c in cast},
+            "char_drama": {c: session_state[f"{key_prefix}char_drama"].get(c, 5) for c in cast},
+            "has_host": session_state.get(f"{key_prefix}has_host", False),
+            "host_name": session_state.get(f"{key_prefix}host_name", "") if session_state.get(f"{key_prefix}has_host") else "",
+            "seasons": {}
+        }
+        if st.button("Save Show", key=f"{key_prefix}save_show_btn"):
+            show_dir = os.path.join("data", "shows", show_id)
+            os.makedirs(show_dir, exist_ok=True)
+            meta_path = os.path.join(show_dir, "metadata.json")
+            with open(meta_path, "w", encoding="utf-8") as f:
+                json.dump(show_obj, f, indent=2)
+            # --- Fix: Also create corresponding media video dir ---
+            video_dir = os.path.join("data", "media", "show_videos", show_id)
+            os.makedirs(video_dir, exist_ok=True)
+            st.success(f"Show '{show_name}' created and saved!")
