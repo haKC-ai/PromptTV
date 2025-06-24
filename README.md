@@ -41,7 +41,6 @@ Open http://localhost:2323 in your browser.
 8. Accept or reject scene ideas submitted via Twitter hashtag (see Twitter integration documentation).
 9. Review galleries of all your videos, music, and logos.
 10. Upload finished episodes directly to YouTube, grouped by show, season, and episode.
-![Screenshot 2025-06-13 at 1 08 54 PM](https://github.com/user-attachments/assets/5f289c7f-c4d7-4246-b1f4-e29b1368341c)
 
 # Directory Structure
 ```
