@@ -7,7 +7,31 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)]()
 ![prompTV_streamlit_Banner23](https://github.com/user-attachments/assets/e08f328c-7282-446e-afe1-f66255c2cc6c)
 
-PromptTV is a full-stack production studio interface for a prompt-driven, AI-generated streaming content pipeline... logos, music, video prompts, custom voices, full character builder with traits such as drama level, physical traits, scene to scene event control and much much more. An interactive TV show studio where you design wild, dynamic, and endlessly branching shows. Audience input (through twitter hash tag monitoring), AI, and automation power the experience. Supports automated upload to YouTube
+### PromptTV is a full-stack production studio interface to fully automate a final video from a simple idea prompt. 
+
+
+- Check the output from from this here:  https://youtu.be/SrG25lr5VOM?si=BLc_aQoed3fvAIBy 
+
+- If you've had an idea for a TV show, bring it to life.
+Git the code here: https://github.com/haKC-ai/PromptTV
+
+- Enables a prompt-driven, AI-generated streaming content pipeline
+
+`Supports creation of:`
+- Full season, Episode and Scene support
+- Character Transcripts (automated, or full control)
+- Logos
+- Music
+- Video prompts
+- Custom voices
+- Full character builder with drama level, physical traits, and behaviors
+
+- Provides scene-to-scene event control
+- Allows design of dynamic, endlessly branching shows
+- Functions as an interactive TV show studio
+- Integrates audience input through Twitter hashtag monitoring
+- Combines AI and automation to drive content generation
+- Supports automated upload to YouTube
 
 # Features
 
