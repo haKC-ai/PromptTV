@@ -7,7 +7,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)]()
 ![prompTV_streamlit_Banner23](https://github.com/user-attachments/assets/e08f328c-7282-446e-afe1-f66255c2cc6c)
 
-PromptTV is an AI-powered interactive TV show studio where you design wild, dynamic, and endlessly branching shows. Audience input, AI, and automation power the experience. Create shows, logos, soundtracks, upload to YouTube, and more.
+PromptTV is a full-stack production studio interface for a prompt-driven, AI-generated streaming content pipeline... logos, music, video prompts, custom voices, full character builder with traits such as drama level, physical traits, scene to scene event control and much much more. An interactive TV show studio where you design wild, dynamic, and endlessly branching shows. Audience input (through twitter hash tag monitoring), AI, and automation power the experience. Supports automated upload to YouTube
 
 # Features
 
@@ -18,6 +18,72 @@ PromptTV is an AI-powered interactive TV show studio where you design wild, dyna
 - Audience Twitter integration for show ideas
 - Media and transcript gallery
 ![Screenshot 2025-06-13 at 1 04 41 PM](https://github.com/user-attachments/assets/d1a209f8-4c15-499b-8e71-4d73ac86bf06)
+
+
+# PromptTV App Overview
+
+## Data Structure Initialization
+- Ensures required directories exist:
+  - data/
+  - data/shows/
+  - data/transcripts/
+  - data/media/show_videos/
+  - data/media/show_logos/
+  - data/media/show_music/
+- Initializes or loads:
+  - shows.json to track available shows
+  - uploads.json to track uploaded content
+  - Both are stored in session state
+
+## Path Utility Functions
+- Defines reusable functions to retrieve:
+  - Show directory
+  - Transcript directory
+  - Prompt directory
+  - Music directory
+
+## BingeWatch Viewer
+- Sidebar interface to:
+  - Select available shows and seasons
+  - Browse and display galleries of episodes
+  - Handles missing or empty folders gracefully
+
+## Logo Generator
+- Generates AI-based logos for selected shows
+- Uses OpenAI API to create 1024x1024 transparent logos
+- Metadata-driven styling using theme, style, and description
+- Supports download and re-use of previously generated logos
+
+## Writer Interface
+- Allows user to:
+  - Select or manually enter season and episode
+  - Prepare for transcript and scriptwriting tasks
+
+## Show Tools
+- Provides tools per show:
+  - Launch media gallery
+  - Regenerate show logo
+  - Placeholder button for show intro
+  - Generate a music prompt based on show metadata
+  - Optionally save prompt or send it to a music service (Suno)
+  - View existing scene files, prompt text, and music drafts
+
+## Veo Integration for Video Creation
+- UI to:
+  - Select show, season, episode, and scene
+  - Choose additional context scenes
+  - Load show metadata for enhanced prompt generation
+  - Generate video prompt text with option to send to Veo
+  - Supports just saving the prompt locally
+
+## Library and Module Usage
+- Uses moviepy for video and audio editing workflows
+- Loads OpenAI API key from a .env file
+- Includes custom modules:
+  - theme_selector, scene_engine, music, logo, transcript
+  - youtube integrations for upload and playlist creation
+  - veo API for video generation
+
 
 # Setup
 
