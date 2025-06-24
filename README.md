@@ -9,6 +9,9 @@
 
 ### PromptTV is a full-stack production studio interface to fully automate a final video from a simple idea prompt. 
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/haKC-ai/PromptTV/refs/heads/main/res/Screenshot_2025-06-24-08-55-57-42_965bbf4d18d205f782c6b8409c5773a4.jpg" alt="PromptTV Screenshot" width="600">
+</p>
 
 - Check the output from from this here:  https://youtu.be/SrG25lr5VOM?si=BLc_aQoed3fvAIBy 
 
